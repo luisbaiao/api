@@ -1,4 +1,5 @@
 package br.com.baiao.api.model;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -32,6 +33,21 @@ public class Product extends AbstractEntity{
     )
     private Collection<Category> categories;
 
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference
+    private Collection<Review> reviews;
+
+    @JsonInclude()
+    @Transient
+    private Double reviewRate;
+
+    public Double getReviewRate() {
+        return reviewRate;
+    }
+
+    public void setReviewRate(Double reviewRate) {
+        this.reviewRate = reviewRate;
+    }
 
     public Long getId() {
         return id;
@@ -79,5 +95,12 @@ public class Product extends AbstractEntity{
 
     public void setCategories(Collection<Category> categories) {
         this.categories = categories;
+    }
+
+    public Collection<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(Collection<Review> reviews) {
+        this.reviews = reviews;
     }
 }
