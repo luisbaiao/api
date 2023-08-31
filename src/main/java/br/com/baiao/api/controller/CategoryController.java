@@ -18,7 +18,7 @@ public class CategoryController {
 
     //adicionarCategoria
     @PostMapping("/")
-    public void adicionarCategoria(@RequestBody Category category){
+    public void adicionarCategoria(@RequestBody Category  category){
         categoryService.salvarCategoria(category);
     }
 
@@ -53,7 +53,7 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<Category>atualizaCategoria(@RequestBody Category category, @PathVariable Long id){
         try {
-            Category categoriaNoBancoDeDados = categoryService.retornarCategoriaPorId(id);
+            categoryService.retornarCategoriaPorId(id);
             category.setId(id);
             categoryService.salvarCategoria(category);
             return new ResponseEntity<>(category,HttpStatus.OK);

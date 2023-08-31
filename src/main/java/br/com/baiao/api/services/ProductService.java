@@ -55,7 +55,7 @@ public class ProductService {
                 nota += review.getRate();
             }
 
-            nota /= (double)product.getReviews().size();
+            nota /= product.getReviews().size();
         }
         product.setReviewRate(nota);
         return product;

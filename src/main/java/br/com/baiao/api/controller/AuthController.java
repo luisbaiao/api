@@ -2,13 +2,14 @@ package br.com.baiao.api.controller;
 
 import br.com.baiao.api.config.JwtTokenUtil;
 import br.com.baiao.api.dto.UserDto;
+import br.com.baiao.api.exceptions.AuthenticateException;
+import br.com.baiao.api.model.User;
 import br.com.baiao.api.payload.JwtRequest;
 import br.com.baiao.api.payload.JwtResponse;
 import br.com.baiao.api.services.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class AuthController {
     private JwtUserDetailsService userDetailsService;
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -40,7 +41,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<?> saveUser(@RequestBody UserDto user){
+    public ResponseEntity<User> saveUser(@RequestBody UserDto user){
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 
@@ -48,9 +49,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new AuthenticateException();
         }
     }
 
