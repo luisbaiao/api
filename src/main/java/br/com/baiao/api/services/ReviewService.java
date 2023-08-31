@@ -2,7 +2,6 @@ package br.com.baiao.api.services;
 
 
 
-import br.com.baiao.api.model.Category;
 import br.com.baiao.api.model.Review;
 import br.com.baiao.api.repository.ProductRepository;
 import br.com.baiao.api.repository.ReviewRepository;
@@ -27,7 +26,7 @@ public class ReviewService {
         return repositorio.findById(id).orElseThrow();
     }
     public void salvarReview(Review review){
-        review.setProduct(productRepository.getById(review.getProduct().getId()));
+        review.setProduct(productRepository.findById(review.getProduct().getId()).orElseThrow());
         repositorio.save(review);
     }
 

@@ -45,7 +45,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Product> atualizaProduto(@RequestBody Product product,@PathVariable Long id){
         try{
-            Product produtoNoBancoDeDados = productService.retornarProdutoPorId(id);
+            productService.retornarProdutoPorId(id);
             product.setId(id);
             productService.salvaProduto(product);
             return new ResponseEntity<>(product,HttpStatus.OK);
